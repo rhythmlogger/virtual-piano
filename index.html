@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <style>
+        @keyframes up {
+            0% {
+                visibility: visible;
+                top: 100%;
+            }
+
+            100% {
+                visibility: hidden;
+                top: 0;
+            }
+        }
+
+        .table {
+            display: table;
+            width: 500px;
+        }
+
+        .row {
+            display: table-row;
+        }
+
+        .key {
+            display: table-cell;
+            width: 50px;
+            height: 25px;
+            text-align: center;
+            border: 1px solid black;
+        }
+
+        .line {
+            display: table-cell;
+            width: 50px;
+            height: 800px;
+            text-align: center;
+            position: relative;
+            border: 1px solid black;
+        }
+
+        .note {
+            width: 50px;
+            height: 25px;
+            /* border: 1px solid black;
+            border-collapse: collapse;
+            box-sizing: border-box; */
+            animation: linear none 4s up;
+            bottom: 100%;
+            position: absolute;
+            visibility: hidden;
+            min-height: 25px;
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="table">
+        <div class="row">
+            <div class="line" id="line-0"></div>
+            <div class="line" id="line-1"></div>
+            <div class="line" id="line-2"></div>
+            <div class="line" id="line-3"></div>
+            <div class="line" id="line-4"></div>
+            <div class="line" id="line-5"></div>
+            <div class="line" id="line-6"></div>
+            <div class="line" id="line-7"></div>
+            <div class="line" id="line-8"></div>
+            <div class="line" id="line-9"></div>
+        </div>
+        <div class="row">
+            <div class="key" id="key-1">1</div>
+            <div class="key" id="key-2">2</div>
+            <div class="key" id="key-3">3</div>
+            <div class="key" id="key-4">4</div>
+            <div class="key" id="key-5">5</div>
+            <div class="key" id="key-6">6</div>
+            <div class="key" id="key-7">7</div>
+            <div class="key" id="key-8">8</div>
+            <div class="key" id="key-9">9</div>
+            <div class="key" id="key-0">0</div>
+        </div>
+        <div class="row">
+            <div class="key" id="key-q">q</div>
+            <div class="key" id="key-w">w</div>
+            <div class="key" id="key-e">e</div>
+            <div class="key" id="key-r">r</div>
+            <div class="key" id="key-t">t</div>
+            <div class="key" id="key-y">y</div>
+            <div class="key" id="key-u">u</div>
+            <div class="key" id="key-i">i</div>
+            <div class="key" id="key-o">o</div>
+            <div class="key" id="key-p">p</div>
+        </div>
+        <div class="row">
+            <div class="key" id="key-a">a</div>
+            <div class="key" id="key-s">s</div>
+            <div class="key" id="key-d">d</div>
+            <div class="key" id="key-f">f</div>
+            <div class="key" id="key-g">g</div>
+            <div class="key" id="key-h">h</div>
+            <div class="key" id="key-j">j</div>
+            <div class="key" id="key-k">k</div>
+            <div class="key" id="key-l">l</div>
+            <div class="key"></div>
+        </div>
+        <div class="row">
+            <div class="key" id="key-z">z</div>
+            <div class="key" id="key-x">x</div>
+            <div class="key" id="key-c">c</div>
+            <div class="key" id="key-v">v</div>
+            <div class="key" id="key-b">b</div>
+            <div class="key" id="key-n">n</div>
+            <div class="key" id="key-m">m</div>
+            <div class="key"></div>
+            <div class="key"></div>
+            <div class="key"></div>
+        </div>
+    </div>
+    <script>
+
+        function createNote(target) {
+            let note = document.createElement('div');
+            note.className = 'note';
+            target.appendChild(note);
+            // play a chord
+        }
+        let soundMap = new Map();
+        let keyMap = new Map();
+        keyMap.set('1', 0);
+        keyMap.set('q', 0);
+        keyMap.set('a', 0);
+        keyMap.set('z', 0);
+        keyMap.set('2', 1);
+        keyMap.set('w', 1);
+        keyMap.set('s', 1);
+        keyMap.set('x', 1);
+        keyMap.set('3', 2);
+        keyMap.set('e', 2);
+        keyMap.set('d', 2);
+        keyMap.set('c', 2);
+        keyMap.set('4', 3);
+        keyMap.set('r', 3);
+        keyMap.set('f', 3);
+        keyMap.set('v', 3);
+        keyMap.set('5', 4);
+        keyMap.set('t', 4);
+        keyMap.set('g', 4);
+        keyMap.set('b', 4);
+        keyMap.set('6', 5);
+        keyMap.set('y', 5);
+        keyMap.set('h', 5);
+        keyMap.set('n', 5);
+        keyMap.set('7', 6);
+        keyMap.set('u', 6);
+        keyMap.set('j', 6);
+        keyMap.set('m', 6);
+        keyMap.set('8', 7);
+        keyMap.set('i', 7);
+        keyMap.set('k', 7);
+        keyMap.set('9', 8);
+        keyMap.set('o', 8);
+        keyMap.set('l', 8);
+        keyMap.set('0', 9);
+        keyMap.set('p', 9);
+        let idx = 0;
+        let keyArray = [
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            '0',
+            'q',
+            'w',
+            'e',
+            'r',
+            't',
+            'y',
+            'u',
+            'i',
+            'o',
+            'p',
+            'a',
+            's',
+            'd',
+            'f',
+            'g',
+            'h',
+            'j',
+            'k',
+            'l',
+            'z',
+            'x',
+            'c',
+            'v',
+            'b',
+            'n',
+            'm',
+        ];
+        let sequenceArray = ['c2', 'd2', 'e2', 'f2', 'g2', 'a2', 'b2', 'c3', 'd3', 'e3', 'f3', 'g3', 'a3', 'b3', 'c4', 'd4', 'e4', 'f4', 'g4', 'a4', 'b4', 'c5', 'd5', 'e5', 'f5', 'g5', 'a5', 'b5', 'c6', 'd6', 'e6', 'f6', 'g6', 'a6', 'b6', 'c7', 'd7', 'e7', 'f7', 'g7', 'a7', 'b7', 'c8']
+        for (let i = 0; i < keyArray.length; i++) {
+            soundMap.set(keyArray[i], sequenceArray[idx]);
+            idx++;
+        }
+        for (const entry of soundMap.entries()) {
+            console.log(entry);
+        }
+        let synth = null;
+        document.body.addEventListener('keyup', function (e) {
+            if (synth == null) {
+                synth = new Tone.PolySynth().toDestination();
+                synth.set({ detune: -1200 });
+            }
+            let k = keyMap.get(e.key);
+            if (k != undefined) {
+                let line = document.getElementById("line-" + k);
+                createNote(line);
+                console.log(soundMap.get(e.key));
+                synth.triggerAttackRelease(soundMap.get(e.key), '32n');
+            } else {
+                return;
+            }
+
+        })
+    </script>
+</body>
+
+</html>
